@@ -1,14 +1,14 @@
 /*jshint esversion: 2017 */
-const fs = require('fs');
 
-let base = 5;
-let data = '';
+//const multiplicar = require('./multiplicar/multiplicar');
+const { crearArchivo } = require('./multiplicar/multiplicar'); // utilizando destructuracion de objetos
 
-for (let i = 1; i <= 10; i++) {
-    data += `${ base } * ${ i } = ${ base * i }\n`;
-}
+let base = 7;
 
-fs.writeFile(`tablas/tabla-${ base }.txt`, data, (err) => {
-    if (err) throw err;
-    console.log(`El archivo que corresponde a la tabla del ${ base } ha sido creado`);
-});
+// Sin la destructuracion de objetos
+//console.log(multiplicar);
+//multiplicar.crearArchivo
+
+crearArchivo(base)
+    .then(archivo => console.log(`Archivo creado: ${ archivo }`))
+    .catch(e => console.log(e));
