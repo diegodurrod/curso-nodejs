@@ -1,16 +1,38 @@
 /*jshint esversion: 2017 */
 const fs = require('fs');
 
-crearArchivo = (base) => {
+crearTabla = async(base, limite) => {
+    let data = '';
+
+    for (let i = 1; i <= limite; i++) {
+        data += `${ base } * ${ i } = ${ base * i }\n`;
+    }
+
+    return data;
+};
+
+listarTabla = async(base, limite = 10) => {
+    if (!Number(base)) {
+        throw new Error(`El valor introducido ${ base } no es un numero`);
+    }
+
+    let tabla = await crearTabla(base, limite);
+
+    console.log(tabla);
+
+    return base;
+};
+
+crearArchivo = (base, limite = 10) => {
     return new Promise((resolve, reject) => {
         if (!Number(base)) {
-            reject('El valor introducido ${ base } no es un numero');
+            reject(`El valor introducido ${ base } no es un numero`);
             return;
         }
 
         let data = '';
 
-        for (let i = 1; i <= 10; i++) {
+        for (let i = 1; i <= limite; i++) {
             data += `${ base } * ${ i } = ${ base * i }\n`;
         }
 
@@ -25,5 +47,6 @@ crearArchivo = (base) => {
 }
 
 module.exports = {
-    crearArchivo // es como hacer crearArchivo = crearArchivo
+    crearArchivo, // es como hacer crearArchivo = crearArchivo
+    listarTabla
 };
