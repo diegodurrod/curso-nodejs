@@ -1,31 +1,10 @@
 /*jshint esversion: 2017 */
 
-const argv = require('yargs')
-    .command('listar', 'Imprime en consola la tabla de multiplicar', {
-        base: {
-            demand: true,
-            alias: 'b'
-        },
-        limite: {
-            alias: 'l',
-            default: 10
-        }
-    })
-    .command('crear', 'Crear el archivo de la tabla de multiplicar', {
-        base: {
-            demand: true,
-            alias: 'b'
-        },
-        limite: {
-            alias: 'l',
-            default: 10
-        }
-    })
-    .help()
-    .argv;
+
 
 //const multiplicar = require('./multiplicar/multiplicar');
 const { crearArchivo, listarTabla } = require('./multiplicar/multiplicar'); // utilizando destructuracion de objetos
+const argv = require('./config/yargs').argv;
 
 // Sin la destructuracion de objetos
 //console.log(multiplicar);
