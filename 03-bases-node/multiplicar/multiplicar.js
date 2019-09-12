@@ -1,5 +1,6 @@
 /*jshint esversion: 2017 */
 const fs = require('fs');
+const colors = require('colors');
 
 crearTabla = async(base, limite) => {
     let data = '';
@@ -12,6 +13,11 @@ crearTabla = async(base, limite) => {
 };
 
 listarTabla = async(base, limite = 10) => {
+
+    console.log('#####################################'.green);
+    console.log(`########### Tabla del ${ base } ###########`.green);
+    console.log('#####################################'.green);
+
     if (!Number(base)) {
         throw new Error(`El valor introducido ${ base } no es un numero`);
     }
