@@ -14,10 +14,19 @@ const guardarDB = async() => {
         //     resolve(`tabla-${ base }.txt`);
         //console.log(`El archivo que corresponde a la tabla del ${ base } ha sido creado`);
     });
+};
 
+const cargarDB = () => {
+    try {
+        listadoPorHacer = require('../db/data.json');
+    } catch (error) {
+        listadoPorHacer = [];
+    }
 };
 
 const crear = (descripcion) => {
+    cargarDB();
+
     let porHacer = {
         descripcion,
         completado: false
