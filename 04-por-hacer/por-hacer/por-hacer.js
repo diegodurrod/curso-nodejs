@@ -38,6 +38,13 @@ const crear = (descripcion) => {
     return porHacer; // Devolvemos este objeto para tener una retroalimentacion
 };
 
+const getListado = () => {
+    cargarDB();
+
+    return listadoPorHacer;
+};
+
 module.exports = {
-    crear
+    crear,
+    getListado
 };
