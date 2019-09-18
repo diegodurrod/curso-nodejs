@@ -25,7 +25,9 @@ const actualizarOpts = {
 
 const argv = require('yargs')
     .command('crear', 'Crear un elemento por hacer', crearOpts)
+    .command('listar', 'Lista todos los elementos', {})
     .command('actualizar', 'Actualiza el estado completado de una tarea', actualizarOpts)
+    .command('borrar', 'Borra un elemento existente', crearOpts)
     .help()
     .argv;
 

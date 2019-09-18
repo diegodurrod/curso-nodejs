@@ -60,8 +60,26 @@ const actualizar = (descripcion, completado = true) => {
     }
 };
 
+const borrar = (descripcion) => {
+    cargarDB();
+
+    let encontrado = false; // Por defecto
+    let index = listadoPorHacer.findIndex(tarea => {
+        return tarea.descripcion === descripcion;
+    });
+
+    if (index >= 0) {
+        listadoPorHacer = listadoPorHacer.filter(tarea => descripcion !== tarea.descripcion);
+        guardarDB();
+        encontrado = true;
+    }
+
+    return encontrado;
+};
+
 module.exports = {
     crear,
     getListado,
-    actualizar
+    actualizar,
+    borrar
 };
