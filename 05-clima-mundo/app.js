@@ -1,5 +1,7 @@
 /*jshint esversion: 2017 */
 const lugar = require('./lugar/lugar');
+const clima = require('./clima/clima');
+
 const argv = require('yargs').options({
     direccion: {
         alias: 'd',
@@ -14,3 +16,7 @@ lugar.getLugarLatLng(argv.direccion)
     }).catch((err) => {
         console.log('ERROR!!', err);
     });
+
+clima.getClima(40.419998, -3.700000)
+    .then(console.log)
+    .catch(console.log);
