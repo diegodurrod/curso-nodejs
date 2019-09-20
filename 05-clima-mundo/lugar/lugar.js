@@ -14,7 +14,7 @@ const getLugarLatLng = async(dir) => {
 
     const resp = await instance.get();
     if (resp.data.Results.length === 0) {
-        throw new Error(`No hay resultados para ${ direccion }`);
+        throw new Error(`No hay resultados para ${ dir }`);
     }
 
     const data = resp.data.Results[0];
