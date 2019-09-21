@@ -1,5 +1,6 @@
 /*jshint esversion: 2017 */
 const express = require('express');
+const hbs = require('hbs');
 const app = express();
 
 // De esta forma se podra servir lo que esta en la carpeta public
@@ -7,6 +8,7 @@ const app = express();
 app.use(express.static(__dirname + '/public'));
 
 // Express HBS engine
+hbs.registerPartials(__dirname + '/views/parciales');
 app.set('view engine', 'hbs');
 
 app.get('/', (req, res) => {
@@ -25,6 +27,13 @@ app.get('/', (req, res) => {
 
     // Handlebars (HBS)
     res.render('home', {
+        nombre: 'Diego',
+        anio: new Date().getFullYear()
+    });
+});
+app.get('/about', (req, res) => {
+    // Handlebars (HBS)
+    res.render('about', {
         nombre: 'Diego',
         anio: new Date().getFullYear()
     });
