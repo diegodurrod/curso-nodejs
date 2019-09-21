@@ -5,6 +5,8 @@ const app = express();
 
 require('./hbs/helpers');
 
+const port = process.env.PORT || 3000;
+
 // De esta forma se podra servir lo que esta en la carpeta public
 // index.html, home.html...
 app.use(express.static(__dirname + '/public'));
@@ -41,6 +43,6 @@ app.get('/about', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log('Escuchando peticiones en el puerto 3000');
+app.listen(port, () => {
+    console.log(`Escuchando peticiones en el puerto ${ port }`);
 });
