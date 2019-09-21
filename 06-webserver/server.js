@@ -6,20 +6,29 @@ const app = express();
 // index.html, home.html...
 app.use(express.static(__dirname + '/public'));
 
-// app.get('/', (req, res) => {
-//     let salida = {
-//         nombre: 'Diego',
-//         edad: 28,
-//         url: req.url
-//     };
-//     res.send(salida);
+// Express HBS engine
+app.set('view engine', 'hbs');
 
-//     // res.send('Hola Mundo');
-// });
+app.get('/', (req, res) => {
+    //     let salida = {
+    //         nombre: 'Diego',
+    //         edad: 28,
+    //         url: req.url
+    //     };
+    //     res.send(salida);
 
-// app.get('/data', (req, res) => {
-//     res.send('Hola Data');
-// });
+    //     // res.send('Hola Mundo');
+    // });
+
+    // app.get('/data', (req, res) => {
+    //     res.send('Hola Data');
+
+    // Handlebars (HBS)
+    res.render('home', {
+        nombre: 'Diego',
+        anio: new Date().getFullYear()
+    });
+});
 
 app.listen(3000, () => {
     console.log('Escuchando peticiones en el puerto 3000');
