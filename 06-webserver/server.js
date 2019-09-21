@@ -3,6 +3,8 @@ const express = require('express');
 const hbs = require('hbs');
 const app = express();
 
+require('./hbs/helpers');
+
 // De esta forma se podra servir lo que esta en la carpeta public
 // index.html, home.html...
 app.use(express.static(__dirname + '/public'));
@@ -27,7 +29,7 @@ app.get('/', (req, res) => {
 
     // Handlebars (HBS)
     res.render('home', {
-        nombre: 'Diego',
+        nombre: 'diegO',
         anio: new Date().getFullYear()
     });
 });
