@@ -1,6 +1,8 @@
 /*jshint esversion: 2017 */
 const express = require('express');
 const bodyParser = require('body-parser');
+require('./config/config');
+
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -43,6 +45,6 @@ app.delete('/usuarios', function(req, res) {
     res.json('Delete Usuarios');
 });
 
-app.listen(3000, () => {
-    console.log('Escuchando el puerto 3000');
+app.listen(process.env.PORT, () => {
+    console.log(`Escuchando el puerto ${ process.env.PORT }`);
 });
