@@ -1,7 +1,9 @@
 /*jshint esversion: 2017 */
-const express = require('express');
-const bodyParser = require('body-parser');
 require('./config/config');
+
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -43,6 +45,15 @@ app.put('/usuarios/:id', function(req, res) {
 
 app.delete('/usuarios', function(req, res) {
     res.json('Delete Usuarios');
+});
+
+mongoose.connect('mongodb://localhost:27017/cafe', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}, (err, resp) => {
+    if (err) throw err;
+
+    console.log('Base de datos ONLINE');
 });
 
 app.listen(process.env.PORT, () => {
