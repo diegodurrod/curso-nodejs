@@ -22,7 +22,7 @@ let usuarioSchema = new Schema({
         required: false
     }, // no es obligatoria
     role: {
-        // type: String,
+        type: String,
         // required: [true, 'El rol es necesario'],
         default: 'USER_ROLE'
     }, // default: 'USER_ROLE'
@@ -36,4 +36,4 @@ let usuarioSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Usuario'); // Se le especifica el nombre que se le va a dar finalmente
+module.exports = mongoose.model('Usuario', usuarioSchema); // Se le especifica el nombre que se le va a dar finalmente

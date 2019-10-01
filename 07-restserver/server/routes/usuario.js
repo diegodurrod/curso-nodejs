@@ -1,5 +1,7 @@
 /*jshint esversion: 2017 */
 const express = require('express');
+const Usuario = require('../models/usuario');
+
 const app = express();
 
 app.get('/', function(req, res) {
@@ -13,15 +15,31 @@ app.get('/usuarios', function(req, res) {
 app.post('/usuarios', function(req, res) {
     let body = req.body;
 
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    }
+    // Creamos el objeto y le pasamos por parametro lo que obtenemos como parametros POST
+    // Lo que hacemos en este caso es pasar a la base de datos los valores segun el modelo cargado
+    let usuario = new Usuario({
+        nombre: body.nombre,
+        email: body.email,
+        password: body.password,
+        estado: body.estado,
+        role: body.role
+    });
 
-    res.json({
-        persona: body
+    // Para guardar en la base de datos necesitamos un callback
+    // - Nos devuelve un error si existiese
+    // - Nos devuelve el usuario de la base de datos una vez creado
+    usuario.save((err, usuarioDB) => {
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            usuario: usuarioDB
+        });
     });
 });
 
