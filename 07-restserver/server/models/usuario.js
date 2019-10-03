@@ -1,5 +1,11 @@
 /*jshint esversion: 2017 */
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
+
+let rolesValidos = {
+    values: ['ADMIN_ROLE', 'USER_ROLE'],
+    message: '{VALUE} no es un rol valido'
+};
 
 let Schema = mongoose.Schema;
 
@@ -11,6 +17,7 @@ let usuarioSchema = new Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: [true, 'El correo es necesario']
     },
     password: {
@@ -24,7 +31,8 @@ let usuarioSchema = new Schema({
     role: {
         type: String,
         // required: [true, 'El rol es necesario'],
-        default: 'USER_ROLE'
+        default: 'USER_ROLE',
+        enum: rolesValidos
     }, // default: 'USER_ROLE'
     estado: {
         type: Boolean,
@@ -35,5 +43,18 @@ let usuarioSchema = new Schema({
         required: [false, 'El campo Google es necesario']
     }
 });
+
+// Modificamos el objeto JSON que devuelde una vez insertado en la base de datos
+// No utilizar funcion de flechas
+usuarioSchema.methods.toJSON = function() {
+    let user = this;
+    let userObject = user.toObject();
+
+    delete userObject.password;
+
+    return userObject;
+}
+
+usuarioSchema.plugin(uniqueValidator, { message: 'El campo {PATH} debe de ser unico' });
 
 module.exports = mongoose.model('Usuario', usuarioSchema); // Se le especifica el nombre que se le va a dar finalmente
