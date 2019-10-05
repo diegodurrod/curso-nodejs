@@ -2,6 +2,7 @@
 const express = require('express');
 const Usuario = require('../models/usuario');
 const bcrypt = require('bcrypt');
+const _ = require('underscore'); // Por defecto se suele llamar _ para hacer el require
 
 const app = express();
 
@@ -48,10 +49,21 @@ app.post('/usuarios', function(req, res) {
 
 app.put('/usuarios/:id', function(req, res) {
     let id = req.params.id;
-    let body = req.body;
+    // solo obtiene el objeto del primer parametro, pero con las propiedades del array que se le pasa en el segundo parametro
+    let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
+    //let body = req.body;
+
+    // Si queremos que no modifique ciertos parametros, podemos eliminar las propiedades, pero no es muy eficiente
+    delete body.password;
+    delete body.google;
 
     // Encuentra el usuario por la id y lo actualiza posteriormente
-    Usuario.findByIdAndUpdate(id, body, { new: true }, (err, usuarioDB) => {
+    Usuario.findByIdAndUpdate(id, body, {
+        new: true,
+        runValidators: true,
+        setDefaultsOnInsert: true, // Necesario con runValidators
+        context: 'query' // Necesario con runValidators
+    }, (err, usuarioDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
