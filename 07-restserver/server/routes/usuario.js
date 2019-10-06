@@ -29,6 +29,16 @@ app.get('/usuarios', function(req, res) {
                 });
             }
 
+            // Cuenta el numero de registro con una condicion (Como el SELECT count(*))
+            // Si se necesita filtrar, se debe de hacer como objeto, al igual que con el find
+            Usuario.count({}, (err, conteo) => {
+                res.json({
+                    ok: true,
+                    usuarios,
+                    cuantos: conteo
+                });
+            });
+
             res.json({
                 ok: true,
                 usuarios
