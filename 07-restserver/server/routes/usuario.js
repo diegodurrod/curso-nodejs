@@ -18,7 +18,7 @@ app.get('/usuarios', function(req, res) {
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({}, 'nombre email role estado google img') // Parecido a findAll(), el segundo parametro define que campos queremos que devuelva
+    Usuario.find({ estado: true }, 'nombre email role estado google img') // Parecido a findAll(), el segundo parametro define que campos queremos que devuelva
         .skip(desde) // Salta los primeros 5 registros
         .limit(limite) // Limitamos a 5 registros
         .exec((err, usuarios) => {
@@ -31,7 +31,7 @@ app.get('/usuarios', function(req, res) {
 
             // Cuenta el numero de registro con una condicion (Como el SELECT count(*))
             // Si se necesita filtrar, se debe de hacer como objeto, al igual que con el find
-            Usuario.count({}, (err, conteo) => {
+            Usuario.count({ estado: true }, (err, conteo) => {
                 res.json({
                     ok: true,
                     usuarios,
@@ -114,10 +114,44 @@ app.put('/usuarios/:id', function(req, res) {
     // });
 });
 
+// app.delete('/usuarios/:id', function(req, res) {
+//     let id = req.params.id;
+
+//     Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
+//         if (err) {
+//             return res.status(400).json({
+//                 ok: false,
+//                 err
+//             });
+//         }
+
+//         if (!usuarioBorrado) {
+//             return res.status(400).json({
+//                 ok: false,
+//                 err: {
+//                     message: 'Usuario no encontrado'
+//                 }
+//             });
+//         }
+
+//         res.json({
+//             ok: true,
+//             usuario: usuarioBorrado
+//         });
+//     });
+// });
+
 app.delete('/usuarios/:id', function(req, res) {
     let id = req.params.id;
+    // solo obtiene el objeto del primer parametro, pero con las propiedades del array que se le pasa en el segundo parametro
+    let body = {};
+    body.estado = false;
+    //let body = req.body;
 
-    Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
+    // Encuentra el usuario por la id y lo actualiza posteriormente
+    Usuario.findByIdAndUpdate(id, body, {
+        new: true
+    }, (err, usuarioDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -125,7 +159,7 @@ app.delete('/usuarios/:id', function(req, res) {
             });
         }
 
-        if (!usuarioBorrado) {
+        if (!usuarioDB) {
             return res.status(400).json({
                 ok: false,
                 err: {
@@ -136,7 +170,7 @@ app.delete('/usuarios/:id', function(req, res) {
 
         res.json({
             ok: true,
-            usuario: usuarioBorrado
+            usuario: usuarioDB
         });
     });
 });
