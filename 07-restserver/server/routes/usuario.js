@@ -18,7 +18,7 @@ app.get('/usuarios', function(req, res) {
     let limite = req.query.limite || 5;
     limite = Number(limite);
 
-    Usuario.find({}) // Parecido a findAll()
+    Usuario.find({}, 'nombre email role estado google img') // Parecido a findAll(), el segundo parametro define que campos queremos que devuelva
         .skip(desde) // Salta los primeros 5 registros
         .limit(limite) // Limitamos a 5 registros
         .exec((err, usuarios) => {
