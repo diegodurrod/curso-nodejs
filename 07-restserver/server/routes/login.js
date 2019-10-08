@@ -2,6 +2,7 @@
 const express = require('express');
 const Usuario = require('../models/usuario');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 
@@ -38,10 +39,17 @@ app.post('/login', (req, res) => {
             });
         }
 
+        // Se declara el JWT
+        // En el primer parametro se especifica el payload,
+        // En el segundo parametro se especifica caducidad
+        let token = jwt.sign({
+            usuario: usuarioDB
+        }, process.env.SEED, { expiresIn: process.env.CADUCIDAD_TOKEN });
+
         res.json({
             ok: true,
             usuario: usuarioDB,
-            token: '123'
+            token
         });
     });
 
