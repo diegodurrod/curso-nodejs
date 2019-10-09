@@ -1,6 +1,7 @@
 /*jshint esversion: 2017 */
 const express = require('express');
 const Usuario = require('../models/usuario');
+const { verificaToken } = require('../middlewares/autenticacion');
 const bcrypt = require('bcrypt');
 const _ = require('underscore'); // Por defecto se suele llamar _ para hacer el require
 
@@ -10,7 +11,7 @@ app.get('/', function(req, res) {
     res.json('Hello World');
 });
 
-app.get('/usuarios', function(req, res) {
+app.get('/usuarios', verificaToken, (req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
