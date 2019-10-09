@@ -12,6 +12,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/usuarios', verificaToken, (req, res) => {
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email,
+    // });
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -47,7 +52,7 @@ app.get('/usuarios', verificaToken, (req, res) => {
         });
 });
 
-app.post('/usuarios', function(req, res) {
+app.post('/usuarios', verificaToken, function(req, res) {
     let body = req.body;
 
     // Creamos el objeto y le pasamos por parametro lo que obtenemos como parametros POST
@@ -80,7 +85,7 @@ app.post('/usuarios', function(req, res) {
     });
 });
 
-app.put('/usuarios/:id', function(req, res) {
+app.put('/usuarios/:id', verificaToken, function(req, res) {
     let id = req.params.id;
     // solo obtiene el objeto del primer parametro, pero con las propiedades del array que se le pasa en el segundo parametro
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
@@ -142,7 +147,7 @@ app.put('/usuarios/:id', function(req, res) {
 //     });
 // });
 
-app.delete('/usuarios/:id', function(req, res) {
+app.delete('/usuarios/:id', verificaToken, function(req, res) {
     let id = req.params.id;
     // solo obtiene el objeto del primer parametro, pero con las propiedades del array que se le pasa en el segundo parametro
     let body = {};

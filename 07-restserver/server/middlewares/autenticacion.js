@@ -18,7 +18,7 @@ let verificaToken = (req, res, next) => {
         }
 
         // Si no hay un error, a la parte del request del usuario, se le asigna la parte del payload del usuario
-        //req.usuarios = decoded.usuarioa;
+        req.usuario = decoded.usuario;
 
         // Hay que recordar, que si no se ejecuta el next(), no sigue la ejecucion del callback que lo invoca
         next();
