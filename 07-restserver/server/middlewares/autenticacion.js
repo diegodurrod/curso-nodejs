@@ -25,6 +25,22 @@ let verificaToken = (req, res, next) => {
     });
 };
 
+let verificaAdminRole = (req, res, next) => {
+    let usuario = req.usuario; // Nombre de la cabecera
+
+    if (usuario.role == 'ADMIN_ROLE') {
+        next();
+    } else {
+        return res.status(401).json({
+            ok: false,
+            err: {
+                message: 'Necesitas tener permiso de administrador'
+            }
+        });
+    }
+};
+
 module.exports = {
-    verificaToken
+    verificaToken,
+    verificaAdminRole
 };

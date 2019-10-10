@@ -1,7 +1,7 @@
 /*jshint esversion: 2017 */
 const express = require('express');
 const Usuario = require('../models/usuario');
-const { verificaToken } = require('../middlewares/autenticacion');
+const { verificaToken, verificaAdminRole } = require('../middlewares/autenticacion');
 const bcrypt = require('bcrypt');
 const _ = require('underscore'); // Por defecto se suele llamar _ para hacer el require
 
@@ -52,7 +52,7 @@ app.get('/usuarios', verificaToken, (req, res) => {
         });
 });
 
-app.post('/usuarios', verificaToken, function(req, res) {
+app.post('/usuarios', [verificaToken, verificaAdminRole], function(req, res) {
     let body = req.body;
 
     // Creamos el objeto y le pasamos por parametro lo que obtenemos como parametros POST
@@ -85,7 +85,7 @@ app.post('/usuarios', verificaToken, function(req, res) {
     });
 });
 
-app.put('/usuarios/:id', verificaToken, function(req, res) {
+app.put('/usuarios/:id', [verificaToken, verificaAdminRole], function(req, res) {
     let id = req.params.id;
     // solo obtiene el objeto del primer parametro, pero con las propiedades del array que se le pasa en el segundo parametro
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
@@ -147,7 +147,7 @@ app.put('/usuarios/:id', verificaToken, function(req, res) {
 //     });
 // });
 
-app.delete('/usuarios/:id', verificaToken, function(req, res) {
+app.delete('/usuarios/:id', [verificaToken, verificaAdminRole], function(req, res) {
     let id = req.params.id;
     // solo obtiene el objeto del primer parametro, pero con las propiedades del array que se le pasa en el segundo parametro
     let body = {};
