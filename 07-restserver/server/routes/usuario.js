@@ -7,9 +7,9 @@ const _ = require('underscore'); // Por defecto se suele llamar _ para hacer el 
 
 const app = express();
 
-app.get('/', function(req, res) {
-    res.json('Hello World');
-});
+// app.get('/', function(req, res) {
+//    res.json('Hello World');
+//});
 
 app.get('/usuarios', verificaToken, (req, res) => {
     // return res.json({
