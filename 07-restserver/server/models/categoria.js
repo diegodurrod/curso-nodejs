@@ -7,11 +7,24 @@ let rolesValidos = {
     message: '{VALUE} no es un rol valido'
 };
 
+let Schema = mongoose.Schema;
+
 let categoriaSchema = new Schema({
     // Terminar de completar
-    nombre,
-    descripcion,
-    usuario
+    nombre: {
+        type: String,
+        required: [true, 'El nombre de la categoría es necesario']
+    },
+    descripcion: {
+        type: String,
+        required: [true, 'La descripción de la categoría es necesaria']
+    },
+    usuario: {
+        type: String,
+        required: [true, 'El identificador del usuario es obligatorio']
+    }
 });
 
-module.exports = mongoose.model('Usuario', categoriaSchema);
+categoriaSchema.plugin(uniqueValidator, { message: 'El campo {PATH} debe de ser unico' });
+
+module.exports = mongoose.model('Categoria', categoriaSchema);
