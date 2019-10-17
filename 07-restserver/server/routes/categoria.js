@@ -104,7 +104,7 @@ app.delete('/categoria/:id', verificaToken, (req, res) => {
 
     let body = {};
 
-    Categoria.findOneAndDelete({ id }, (err, categoriaDB) => {
+    Categoria.findOneAndRemove({ id }, (err, categoriaDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -123,7 +123,7 @@ app.delete('/categoria/:id', verificaToken, (req, res) => {
 
         res.json({
             ok: true,
-            categoria: categoriaDB
+            message: 'Categoria borrada con exito'
         });
     });
 });
