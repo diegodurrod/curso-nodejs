@@ -9,19 +9,22 @@ let Categoria = require('../models/categoria');
 
 // Deben de mostrarse todas la categorias
 app.get('/categoria', verificaToken, (req, res) => {
-    Categoria.find({}, (err, categoriaDB) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
+    Categoria.find({})
+        .sort('descripcion')
+        .populate('usuario', 'nombre email', 'Usuario') // si indicamos solo la coleccion, mostrara todos los campos; si indicamos el segundo parametro, mostrara solo los campos indicados; si se especifica un tercer parametro, es porque el primero es el nombre de la propiedad, el segundo son los campos del modelo a mostrar y el tercer parametro seria el modelo
+        .exec((err, categoriaDB) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
 
-        res.json({
-            ok: true,
-            categoria: categoriaDB
+            res.json({
+                ok: true,
+                categoria: categoriaDB
+            });
         });
-    });
 });
 
 // Mostrar una categoria por ID
