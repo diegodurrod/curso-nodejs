@@ -42,19 +42,31 @@ app.get('/productos', verificaToken, (req, res) => {
 app.get('/productos/:id', verificaToken, (req, res) => {
     let id = req.body.id;
 
-    Producto.findById(id, (err, productoDB) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                err
-            });
-        }
+    Producto.findById(id)
+        .populate('usuario', 'nombre email', 'Usuario')
+        .populate('categoria', 'nombre precioUni descripcion', 'Categoria')
+        .exec((err, productoDB) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
 
-        res.json({
-            ok: true,
-            producto: productoDB
+            if (!productoDB) {
+                return res.status(400).json({
+                    ok: false,
+                    err: {
+                        message: 'No existe el producto'
+                    }
+                });
+            }
+
+            res.json({
+                ok: true,
+                producto: productoDB
+            });
         });
-    });
     // ToDo:
     // Obtener un producto por id
     // populate: usuario y categoria
@@ -83,7 +95,7 @@ app.post('/productos', verificaToken, (req, res) => {
             });
         }
 
-        res.json({
+        res.status(201).json({
             ok: true,
             producto: productoDB
         });
