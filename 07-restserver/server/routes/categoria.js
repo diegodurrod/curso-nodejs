@@ -109,7 +109,7 @@ app.delete('/categoria/:id', verificaToken, (req, res) => {
 
     Categoria.findOneAndRemove({ id }, (err, categoriaDB) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 err
             });
