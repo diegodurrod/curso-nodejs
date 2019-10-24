@@ -3,15 +3,32 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
 
+const Usuario = require('../models/usuario');
+
 // default options
 app.use(fileUpload());
 
-app.put('/upload', (req, res) => {
+app.put('/upload/:tipo/:id', (req, res) => {
+    let tipo = req.params.tipo;
+    let id = req.params.id;
+
     if (!req.files) {
         return res.status(400).json({
             ok: false,
             err: {
                 message: 'No se ha seleccionado ningun archivo'
+            }
+        });
+    }
+
+    // Validar tipo
+    let tiposValidos = ['productos', 'usuarios'];
+    if (tiposValidos.indexOf(tipo) < 0) {
+        return res.status(400).json({
+            ok: false,
+            err: {
+                message: 'Los tipos permitidos permitidas son ' + tiposValidos.join(', '),
+                tipo
             }
         });
     }
@@ -27,12 +44,16 @@ app.put('/upload', (req, res) => {
         return res.status(400).json({
             ok: false,
             err: {
-                message: 'Las extensiones permitidas son ' + extensionesValidas.join(', ')
+                message: 'Las extensiones permitidas son ' + extensionesValidas.join(', '),
+                ext: extension
             }
         });
     }
 
-    archivo.mv(`uploads/${ archivo.name }`, (err) => {
+    // Cambiar nombre al archivo
+    let nombreArchivo = `${ id }-${ new Date().getMilliseconds() }.${ extension }`;
+
+    archivo.mv(`uploads/${ tipo }/${ nombreArchivo }`, (err) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
@@ -44,7 +65,7 @@ app.put('/upload', (req, res) => {
             ok: true,
             message: 'Archivo subido con exito'
         });
-    })
+    });
 });
 
 module.exports = app;
