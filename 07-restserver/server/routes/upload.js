@@ -61,11 +61,48 @@ app.put('/upload/:tipo/:id', (req, res) => {
             });
         }
 
-        res.json({
-            ok: true,
-            message: 'Archivo subido con exito'
-        });
+        imagenUsuario(id, res, nombreArchivo);
+
+        // res.json({
+        //     ok: true,
+        //     message: 'Archivo subido con exito'
+        // });
     });
 });
+
+let imagenUsuario = (id, res, nombreArchivo) => {
+    Usuario.findById(id, (err, usuarioDB) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!usuarioDB) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'El usuario no existe'
+                }
+            });
+        }
+
+        // Asociamos la propiedad de la imagen y la asociamos
+        usuarioDB.img = nombreArchivo;
+        usuarioDB.save((err, usuarioGuardado) => {
+            res.json({
+                ok: true,
+                usuario: usuarioGuardado,
+                img: nombreArchivo
+            })
+        });
+
+    });
+
+};
+let imagenProducto = () => {
+
+};
 
 module.exports = app;
