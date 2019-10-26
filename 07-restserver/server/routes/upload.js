@@ -5,6 +5,9 @@ const app = express();
 
 const Usuario = require('../models/usuario');
 
+const fs = require('fs');
+const path = require('path');
+
 // default options
 app.use(fileUpload());
 
@@ -73,6 +76,8 @@ app.put('/upload/:tipo/:id', (req, res) => {
 let imagenUsuario = (id, res, nombreArchivo) => {
     Usuario.findById(id, (err, usuarioDB) => {
         if (err) {
+            borraArchivo(nombreArchivo, 'usuarios');
+
             return res.status(500).json({
                 ok: false,
                 err
@@ -80,6 +85,8 @@ let imagenUsuario = (id, res, nombreArchivo) => {
         }
 
         if (!usuarioDB) {
+            borraArchivo(nombreArchivo, 'usuarios');
+
             return res.status(400).json({
                 ok: false,
                 err: {
@@ -87,6 +94,9 @@ let imagenUsuario = (id, res, nombreArchivo) => {
                 }
             });
         }
+
+        // Al subir una imagen, debemos de borrar la antigua
+        borraArchivo(usuarioDB.img, 'usuarios');
 
         // Asociamos la propiedad de la imagen y la asociamos
         usuarioDB.img = nombreArchivo;
@@ -101,8 +111,18 @@ let imagenUsuario = (id, res, nombreArchivo) => {
     });
 
 };
+
 let imagenProducto = () => {
 
+};
+
+let borraArchivo = (nombreImagen, tipo) => {
+    let pathImagen = path.resolve(__dirname, `../../uploads/${ tipo }/${ nombreImagen }`);
+    // Elegimos existsSync ya que es un metodo sincrono, exists funciona a traves de callbacks
+    if (fs.existsSync(pathImagen)) {
+        // Borramos el archivo
+        fs.unlinkSync(pathImagen);
+    }
 };
 
 module.exports = app;
