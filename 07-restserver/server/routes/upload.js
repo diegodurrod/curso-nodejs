@@ -4,6 +4,7 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 const Usuario = require('../models/usuario');
+const Producto = require('../models/producto');
 
 const fs = require('fs');
 const path = require('path');
@@ -64,7 +65,16 @@ app.put('/upload/:tipo/:id', (req, res) => {
             });
         }
 
-        imagenUsuario(id, res, nombreArchivo);
+        switch (tipo) {
+            case 'usuarios':
+                imagenUsuario(id, res, nombreArchivo);
+                break;
+            case 'productos':
+                imagenProducto(id, res, nombreArchivo);
+                break;
+            default:
+                break;
+        }
 
         // res.json({
         //     ok: true,
@@ -105,15 +115,46 @@ let imagenUsuario = (id, res, nombreArchivo) => {
                 ok: true,
                 usuario: usuarioGuardado,
                 img: nombreArchivo
-            })
+            });
         });
-
     });
-
 };
 
-let imagenProducto = () => {
+let imagenProducto = (id, res, nombreArchivo) => {
+    Producto.findById(id, (err, productoDB) => {
+        if (err) {
+            borraArchivo(nombreArchivo, 'productos');
 
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!productoDB) {
+            borraArchivo(nombreArchivo, 'productos');
+
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'El producto no existe'
+                }
+            });
+        }
+
+        // Al subir una imagen, debemos de borrar la antigua
+        borraArchivo(productoDB.img, 'productos');
+
+        // Asociamos la propiedad de la imagen y la asociamos
+        productoDB.img = nombreArchivo;
+        productoDB.save((err, productoGuardado) => {
+            res.json({
+                ok: true,
+                producto: productoGuardado,
+                img: nombreArchivo
+            });
+        });
+    });
 };
 
 let borraArchivo = (nombreImagen, tipo) => {
