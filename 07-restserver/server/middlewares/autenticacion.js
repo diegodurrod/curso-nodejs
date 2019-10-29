@@ -40,7 +40,28 @@ let verificaAdminRole = (req, res, next) => {
     }
 };
 
+// Verifica token para imagen
+let verificaTokenImg = (req, res, next) => {
+    let token = req.query.token;
+
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                ok: false,
+                err
+            });
+        }
+
+        // Si no hay un error, a la parte del request del usuario, se le asigna la parte del payload del usuario
+        req.usuario = decoded.usuario;
+
+        // Hay que recordar, que si no se ejecuta el next(), no sigue la ejecucion del callback que lo invoca
+        next();
+    });
+};
+
 module.exports = {
     verificaToken,
-    verificaAdminRole
+    verificaAdminRole,
+    verificaTokenImg
 };

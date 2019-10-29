@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,18 +9,20 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="59888989773-l9e08et6s6tun5gp23rijm8v6it0b6ke.apps.googleusercontent.com">
 </head>
+
 <body>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div> 
+    <!-- <img src="http://localhost:3000/imagen/usuarios/5d992f530bbcc9447093ed13-560.jpg?token=(token_usuario)" alt="" srcset=""> -->
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <a href="#" onclick="signOut();">Sign out</a>
     <script>
-    function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-        console.log('User signed out.');
-        });
-    }
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+                console.log('User signed out.');
+            });
+        }
     </script>
-    
+
 
     <script>
         function onSignIn(googleUser) {
@@ -35,12 +38,12 @@
             xhr.open('POST', '/google');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
-            console.log('Signed in as: ' + xhr.responseText);
+                console.log('Signed in as: ' + xhr.responseText);
             };
             xhr.send('idtoken=' + id_token);
 
         }
     </script>
 </body>
-</html>
 
+</html>
