@@ -20,9 +20,16 @@
             console.log('Conectado al servidor');
         });
 
+        // Los on son para recibir
         // Código que se ejecuta cuando se pierde la conexión con el servidor
         socket.on('disconnect', function() {
             console.log('Desconectado del servidor');
+        });
+
+        // Los emits son para enviar informacion
+        socket.emit('enviarMensaje', {
+            usuario: 'Diego',
+            mensaje: 'Hola Mundo'
         });
     </script>
 </body>

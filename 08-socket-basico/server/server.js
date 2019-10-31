@@ -1,3 +1,4 @@
+/*jshint esversion: 2017 */
 const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
@@ -23,6 +24,11 @@ io.on('connection', (client) => {
 
     client.on('disconnect', () => {
         console.log('Usuario desconectado');
+    });
+
+    // Escucha al cliente
+    client.on('enviarMensaje', (mensaje) => {
+        console.log(mensaje);
     });
 });
 
