@@ -17,6 +17,15 @@ app.use(express.static(publicPath));
 // IO = esta es la comunicacion del backend
 let io = socketIO(server);
 
+// Cuando el cliente se conecta, lanzamos este mensaje
+io.on('connection', (client) => {
+    console.log('Usuario conectado');
+
+    client.on('disconnect', () => {
+        console.log('Usuario desconectado');
+    });
+});
+
 // Ahora para escuchar el puerto, cambiamos app por server
 server.listen(port, (err) => {
     if (err) throw new Error(err);
