@@ -7,6 +7,10 @@ socket.on('connect', () => {
     console.log('Conectado al servidor');
 });
 
+socket.on('estadoActual', (data) => {
+    label.text('Ticket ' + data.actual);
+});
+
 socket.on('disconnect', () => {
     console.log('Desconectado del servidor');
 });
