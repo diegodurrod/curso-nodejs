@@ -13,12 +13,14 @@ class TicketControl {
         this.ultimo = 0; // ultimo ticket
         this.hoy = new Date().getDate();
         this.tickets = [];
+        this.ultimos4 = [];
 
         let data = require('../data/data.json');
 
         if (data.hoy === this.hoy) {
             this.ultimo = data.ultimo;
             this.tickets = data.tickets;
+            this.ultimos4 = data.ultimos4;
         } else {
             this.reiniciarConteo();
         }
@@ -39,9 +41,34 @@ class TicketControl {
         return `Ticket ${ this.ultimo }`;
     }
 
+    atenderTicket(escritorio) {
+        if (this.tickets.length === 0) {
+            return 'No hay tickets';
+        }
+
+        // Evitamos que se pase por referencia
+        let numeroTicket = this.tickets[0].numero;
+        this.tickets.shift(); // Elimina un elemento al principio
+
+        let atenderTicket = new Ticket(numeroTicket, escritorio);
+        this.ultimos4.unshift(atenderTicket); // Crea un elemento al principio
+
+        if (this.ultimos4.length > 4) {
+            this.ultimos4.splice(-1, 1); // Borra el ultimo elemento
+        }
+
+        console.log('Ultimos 4');
+        console.log(this.ultimos4);
+
+        this.grabarArchivo();
+
+        return atenderTicket;
+    }
+
     reiniciarConteo() {
         this.ultimo = 0;
         this.tickets = [];
+        this.ultimos4 = [];
         this.grabarArchivo();
 
         console.log('Se ha reiniciado el sistema');
@@ -51,7 +78,8 @@ class TicketControl {
         let jsonData = {
             ultimo: this.ultimo,
             hoy: this.hoy,
-            tickets: this.tickets
+            tickets: this.tickets,
+            ultimos4: this.ultimos4
         };
 
         let jsonDataString = JSON.stringify(jsonData);
