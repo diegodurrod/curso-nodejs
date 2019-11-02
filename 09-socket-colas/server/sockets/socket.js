@@ -1,4 +1,8 @@
+/*jshint esversion: 2017 */
 const { io } = require('../server');
+const { TicketControl } = require('../classes/ticket-control');
+
+const ticketControl = new TicketControl();
 
 io.on('connection', (client) => {
     console.log('Usuario conectado');
@@ -14,21 +18,21 @@ io.on('connection', (client) => {
 
     // Escucha al cliente
     client.on('enviarMensaje', (data, callback) => {
-        
+
         console.log(data);
 
         client.broadcast.emit('enviarMensaje', data);
-/*
-        if(data.usuario) {
-            callback({
-                resp: 'TODO SALIÓ BIEN'
-            });
-        }
-        else {
-            callback({
-                resp: 'TODO SALIÓ MAL!!!'
-            });
-        }
-        */
+        /*
+                if(data.usuario) {
+                    callback({
+                        resp: 'TODO SALIÓ BIEN'
+                    });
+                }
+                else {
+                    callback({
+                        resp: 'TODO SALIÓ MAL!!!'
+                    });
+                }
+                */
     });
 });
