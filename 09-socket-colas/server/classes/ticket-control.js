@@ -1,15 +1,24 @@
 /*jshint esversion: 2017 */
 const fs = require('fs');
 
+class Ticket {
+    constructor(numero, escritorio) {
+        this.numero = numero;
+        this.escritorio = escritorio;
+    }
+}
+
 class TicketControl {
     constructor() {
         this.ultimo = 0; // ultimo ticket
         this.hoy = new Date().getDate();
+        this.tickets = [];
 
         let data = require('../data/data.json');
 
         if (data.hoy === this.hoy) {
             this.ultimo = data.ultimo;
+            this.tickets = data.tickets;
         } else {
             this.reiniciarConteo();
         }
@@ -17,6 +26,10 @@ class TicketControl {
 
     siguiente() {
         this.ultimo++;
+
+        let ticket = new Ticket(this.ultimo, null);
+        this.tickets.push(ticket);
+
         this.grabarArchivo();
 
         return `Ticket ${ this.ultimo }`;
@@ -28,6 +41,7 @@ class TicketControl {
 
     reiniciarConteo() {
         this.ultimo = 0;
+        this.tickets = [];
         this.grabarArchivo();
 
         console.log('Se ha reiniciado el sistema');
@@ -36,7 +50,8 @@ class TicketControl {
     grabarArchivo() {
         let jsonData = {
             ultimo: this.ultimo,
-            hoy: this.hoy
+            hoy: this.hoy,
+            tickets: this.tickets
         };
 
         let jsonDataString = JSON.stringify(jsonData);
