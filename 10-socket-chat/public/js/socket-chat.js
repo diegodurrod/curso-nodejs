@@ -35,11 +35,16 @@ socket.on('disconnect', function() {
 // });
 
 // Escuchar información
-socket.on('crearMensaje', function(mensaje) {
+socket.on('crearMensaje', (mensaje) => {
     console.log('Servidor:', mensaje);
 });
 
 // Cuando un usuario entra o sale del chat
-socket.on('listaPersona', function(personas) {
+socket.on('listaPersona', (personas) => {
     console.log(personas);
+});
+
+// Mensajes privador
+socket-on('mensajePrivado', (mensaje) => {
+    console.log('Mensaje Privado:', mensaje);
 });
