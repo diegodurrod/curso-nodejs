@@ -45,6 +45,6 @@ socket.on('listaPersona', (personas) => {
 });
 
 // Mensajes privador
-socket-on('mensajePrivado', (mensaje) => {
+socket.on('mensajePrivado', (mensaje) => {
     console.log('Mensaje Privado:', mensaje);
 });
