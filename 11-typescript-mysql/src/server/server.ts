@@ -1,8 +1,9 @@
 import express = require('express');
+import path = require('path');
 
 export default class Server {
-    public app: express.Application;
-    public port: number;
+    private app: express.Application;
+    private port: number;
 
     constructor(puerto: number) {
         this.port = puerto;
@@ -13,7 +14,13 @@ export default class Server {
         return new Server(puerto);
     }
 
-    start(callback: Function) {
+    private publicFolder() {
+        const publicPath = path.resolve(__dirname, '../public');
+        this.app.use(express.static(publicPath));
+    }
+
+    public start(callback: Function) {
         this.app.listen(this.port, callback());
+        this.publicFolder();
     }
 }
