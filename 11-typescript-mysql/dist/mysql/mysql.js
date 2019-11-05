@@ -13,6 +13,25 @@ class MySQL {
         });
         this.conectarDB();
     }
+    static get instance() {
+        return this._instance || (this._instance = new this());
+    }
+    static ejecutarQuery(query, callback) {
+        // Como estamos aplicando el patrón Singleton, debemos de hacer referencia a la instancia ya que las propiedades no son estáticas
+        this.instance.conn.query(query, (err, results, fields) => {
+            if (err) {
+                console.log('Error en query');
+                console.log(err);
+                return callback(err);
+            }
+            if (results.length === 0) {
+                callback('El registro solicitado no existe');
+            }
+            else {
+                callback(null, results);
+            }
+        });
+    }
     conectarDB() {
         this.conn.connect((err) => {
             if (err) {

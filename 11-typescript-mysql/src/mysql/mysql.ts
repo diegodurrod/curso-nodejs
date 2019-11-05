@@ -20,7 +20,28 @@ export default class MySQL {
     }
 
     public static get instance() {
-        return this._instance;
+        return this._instance || (this._instance = new this());
+    }
+
+    static ejecutarQuery( query: string, callback: Function ) {
+        // Como estamos aplicando el patrón Singleton, debemos de hacer referencia a la instancia ya que las propiedades no son estáticas
+        this.instance.conn.query(query, (err, results: Object[], fields) => {
+            if(err) {
+                console.log('Error en query');
+                console.log(err);
+                
+                return callback(err);
+            }
+
+            if(results.length === 0) {
+                callback('El registro solicitado no existe');
+            }
+            else {
+                callback(null, results);
+            }
+
+            
+        });
     }
 
     private conectarDB() {
