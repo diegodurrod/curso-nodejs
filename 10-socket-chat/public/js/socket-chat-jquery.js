@@ -21,3 +21,11 @@ function renderizarUsuarios(personas) {
 
     divUsuarios.html(html);
 }
+
+// Listeners
+divUsuarios.on('click', 'a', function() {
+    var id = $(this).data('id');
+    if(id) {
+        console.log(id);
+    }
+});
