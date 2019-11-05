@@ -2,8 +2,8 @@ import express = require('express');
 import path = require('path');
 
 export default class Server {
-    private app: express.Application;
-    private port: number;
+    public app: express.Application;
+    public port: number;
 
     constructor(puerto: number) {
         this.port = puerto;
